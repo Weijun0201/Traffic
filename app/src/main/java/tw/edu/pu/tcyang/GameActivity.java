@@ -1,5 +1,7 @@
 package tw.edu.pu.tcyang;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
@@ -9,7 +11,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity  {
 
     GameSurfaceView GameSV;
     Handler handler;
@@ -38,34 +40,31 @@ public class GameActivity extends AppCompatActivity {
         //GameSV.SetLightSec(6,2,3);
         //讀取使用者輸入之燈號秒數
         Intent it = getIntent();
-        GameSV.SetLightSec(it.getIntExtra("SecG",0),
-                it.getIntExtra("SecY",0),
-                it.getIntExtra("SecR",0));
+        GameSV.SetLightSec(it.getIntExtra("SecG", 0),
+                it.getIntExtra("SecY", 0),
+                it.getIntExtra("SecR", 0));
 
-        handler= new Handler();
+        handler = new Handler();
     }
 
 
     float LastX, CurrentX;  //手指觸控X座標
 
     //利用手指觸控，控制小男孩走路
-    public boolean onTouchEvent (MotionEvent event){
-        if (event.getAction() == MotionEvent.ACTION_DOWN){
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             //GameSV.BoyMoving = true;
             LastX = event.getX();
             handler.post(runnable);
-        }
-        else if (event.getAction() == MotionEvent.ACTION_UP){
-            GameSV.BoyMoving =  false;
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            GameSV.BoyMoving = false;
             handler.removeCallbacks(runnable);  //銷毀執行緒
-        }
-        else if (event.getAction() == MotionEvent.ACTION_MOVE){
+        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             CurrentX = event.getX();
-            if (CurrentX>LastX){
+            if (CurrentX > LastX) {
                 GameSV.BoyMoving = true;
-            }
-            else{
-                GameSV.BoyMoving =  false;
+            } else {
+                GameSV.BoyMoving = false;
             }
             LastX = CurrentX;
         }
@@ -80,8 +79,10 @@ public class GameActivity extends AppCompatActivity {
             GameSV.drawSomething(canvas);
             GameSV.getHolder().unlockCanvasAndPost(canvas);
             handler.postDelayed(runnable, 50);
+
         }
     };
+
 
 
 
